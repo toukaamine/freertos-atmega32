@@ -11,6 +11,7 @@
  * $Id: lcd.c,v 1.1 2005/12/28 21:38:59 joerg_wunsch Exp $
  */
 
+#include "FreeRTOS.h"
 #include "lcddefines.h"
 
 #include <stdbool.h>
@@ -19,17 +20,24 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include "semphr.h"
+#include "task.h"
+
 #include "hd44780.h"
 #include "lcd.h"
 
-FILE lcd_str = FDEV_SETUP_STREAM(lcd_putchar, NULL, _FDEV_SETUP_WRITE);
+FILE lcd_str = FDEV_SETUP_STREAM(xPutCharLCD, NULL, _FDEV_SETUP_WRITE);
+
+xSemaphoreHandle xMutex;
 
 /*
  * Setup the LCD controller.  First, call the hardware initialization
  * function, then adjust the display attributes we want.
  */
-void lcd_init(void)
+void vInitLCD(void)
 {
+
+  xMutex = xSemaphoreCreateRecursiveMutex();
 
   hd44780_init();
 
@@ -64,11 +72,15 @@ void lcd_init(void)
  * Send character c to the LCD display.  After a '\n' has been seen,
  * the next character will first clear the display.
  */
-int lcd_putchar(char c, FILE *unused)
+portSHORT xPutCharLCD(portCHAR c, FILE *unused)
 {
   static bool nl_seen;
   static uint8_t line = 0;
 
+  if (xTakeLCD(portMAX_DELAY) == pdFALSE)
+    return -1;
+
+  vTaskSuspendAll();
   if (nl_seen && c != '\n') {
     /*
      * First character after newline, clear display and home cursor.
@@ -95,6 +107,19 @@ int lcd_putchar(char c, FILE *unused)
     hd44780_outdata(c);
     _delay_us(40);
   }
+  xTaskResumeAll();
+
+  xGiveLCD();
 
   return 0;
+}
+
+portBASE_TYPE xTakeLCD( portTickType xBlockTime )
+{
+  return xSemaphoreTakeRecursive(xMutex, xBlockTime);
+}
+
+portBASE_TYPE xGiveLCD( void )
+{
+  return xSemaphoreGiveRecursive(xMutex);
 }

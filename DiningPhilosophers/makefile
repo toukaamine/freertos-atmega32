@@ -45,31 +45,25 @@ OPT = s
 
 
 # List C source files here. (C dependencies are automatically generated.)
-#DEMO_DIR = ../Common/Minimal
-SOURCE_DIR = ../FreeRTOS
+FREERTOS_DIR = ../FreeRTOS
+FREERTOS_INCLUDE_DIR = ../FreeRTOS/include
 PORT_DIR = ../FreeRTOS/portable/GCC/ATMega323
+LCD_DIR = ../lcd
+UART_DIR = ../uart
 
 SRC	= \
 main.c \
 led.c \
-$(SOURCE_DIR)/tasks.c \
-$(SOURCE_DIR)/queue.c \
-$(SOURCE_DIR)/list.c \
-$(SOURCE_DIR)/croutine.c \
-$(SOURCE_DIR)/portable/MemMang/heap_1.c \
-$(PORT_DIR)/port.c
+$(UART_DIR)/uart.c \
+$(FREERTOS_DIR)/tasks.c \
+$(FREERTOS_DIR)/queue.c \
+$(FREERTOS_DIR)/list.c \
+$(FREERTOS_DIR)/croutine.c \
+$(FREERTOS_DIR)/portable/MemMang/heap_1.c \
+$(PORT_DIR)/port.c 
 
-FREERTOS_INCLUDE_DIR = ../FreeRTOS/include
-
-# If there is more than one source file, append them above, or modify and
-# uncomment the following:
-#SRC += foo.c bar.c
-
-# You can also wrap lines by appending a backslash to the end of the line:
-#SRC += baz.c \
-#xyzzy.c
-
-
+#$(LCD_DIR)/lcd.c \
+#$(LCD_DIR)/hd44780.c \
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -83,7 +77,7 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS = 
+EXTRAINCDIRS = $(FREERTOS_INCLUDE_DIR) $(PORT_DIR) $(LCD_DIR) $(UART_DIR)
 
 
 # Optional compiler flags.
@@ -98,7 +92,7 @@ DEBUG_LEVEL=-g
 WARNINGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare \
 		-Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wunused
 
-CFLAGS = -D GCC_MEGA_AVR -I. -I$(FREERTOS_INCLUDE_DIR)  \
+CFLAGS = -D GCC_MEGA_AVR -I.  \
 $(DEBUG_LEVEL) -O$(OPT) \
 -fsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
 $(WARNINGS) \
@@ -144,7 +138,7 @@ LDFLAGS = -Wl,-Map=$(TARGET).map,--cref
 #LDFLAGS += -Wl,-u,vfprintf -lprintf_flt
 
 # -lm = math library
-LDFLAGS += -lm
+#LDFLAGS += -lm
 
 
 

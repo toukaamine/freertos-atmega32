@@ -13,16 +13,22 @@
 #ifndef LCD_H_
 #define LCD_H_
 #include <stdio.h>
+#include "portmacro.h"
 
 extern FILE lcd_str;
 /*
  * Initialize LCD controller.  Performs a software reset.
  */
-void lcd_init(void);
+void vInitLCD(void);
 
 /*
  * Send one character to the LCD.
  */
-int lcd_putchar(char c, FILE *stream);
+portSHORT xPutCharLCD(portCHAR c, FILE *stream);
+
+portBASE_TYPE xTakeLCD( portTickType xBlockTime );
+
+portBASE_TYPE xGiveLCD( void );
+
 
 #endif
