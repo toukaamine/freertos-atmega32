@@ -50,10 +50,11 @@ FREERTOS_INCLUDE_DIR = ../FreeRTOS/include
 PORT_DIR = ../FreeRTOS/portable/GCC/ATMega323
 LCD_DIR = ../lcd
 UART_DIR = ../uart
+LED_DIR = ../led
 
 SRC	= \
 main.c \
-led.c \
+$(LED_DIR)/led.c \
 $(UART_DIR)/uart.c \
 $(FREERTOS_DIR)/tasks.c \
 $(FREERTOS_DIR)/queue.c \
@@ -77,7 +78,7 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS = $(FREERTOS_INCLUDE_DIR) $(PORT_DIR) $(LCD_DIR) $(UART_DIR)
+EXTRAINCDIRS = $(FREERTOS_INCLUDE_DIR) $(PORT_DIR) $(LCD_DIR) $(UART_DIR) $(LED_DIR)
 
 
 # Optional compiler flags.
