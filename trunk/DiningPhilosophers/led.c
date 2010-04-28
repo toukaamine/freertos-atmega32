@@ -11,6 +11,7 @@
 /* Scheduler include files. */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "led.h"
 /*-----------------------------------------------------------*/
 #define LED_PORT    PORTB
 #define LED_DDR     DDRB
