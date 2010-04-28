@@ -10,6 +10,9 @@
  *
  * $Id: uart.c,v 1.1 2005/12/28 21:38:59 joerg_wunsch Exp $
  */
+#include "FreeRTOS.h"
+#include "task.h"
+
 #include "uartdefines.h"
 #include <stdint.h>
 #include <avr/io.h>
@@ -45,8 +48,10 @@ int uart_putchar(char c, FILE *stream)
 
   if (c == '\n')
     uart_putchar('\r', stream);
+  vTaskSuspendAll();
   loop_until_bit_is_set(UCSRA, UDRE);
   UDR = c;
+  xTaskResumeAll();
 
   return 0;
 }
