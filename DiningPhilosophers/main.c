@@ -12,7 +12,6 @@
 /* Scheduler include files. */
 #include "FreeRTOS.h"
 #include "task.h"
-#include "croutine.h"
 #include "semphr.h"
 
 #include "led.h"
