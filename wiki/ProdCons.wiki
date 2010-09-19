@@ -1,0 +1,10 @@
+#summary Opis programu ProdCons
+
+= Wstęp =
+
+Implementacja klasycznego przykładu synchronizacji procesów - [http://pl.wikipedia.org/wiki/Problem_producenta_i_konsumenta Problemu producenta i konsumenta]. 
+
+
+
+= Szczegóły =
+
