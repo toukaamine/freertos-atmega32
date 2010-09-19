@@ -1,0 +1,9 @@
+#summary Opis programu Dining Philosophers
+
+= Wstęp =
+
+Implementacja klasycznego przykładu synchronizacji procesów -- [http://pl.wikipedia.org/wiki/Problem_ucztuj%C4%85cych_filozof%C3%B3w Problem pięciu filozofów]. Rozwiązanie z kelnerem, który dba aby co najwyżej czterech filozofów mogło próbować wziąć widelec.
+
+
+= Szczegóły =
+
